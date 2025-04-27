@@ -6,7 +6,7 @@
 % Midterm Project: QPSK Matlab Simulation
 
 clear
-rng(9900) %Using last 4 digits of my ID as a seed
+rng(9900) %Using the last 4 digits of my ID as a seed
 
     % Generating a sequence of random bits
 bits =  randi([0,1], 1, 1e6);
@@ -34,11 +34,11 @@ xlim([0 8]);
 ylim([10^-4 .1]);
 yscale('log');
 hold on;
-    %Empty plots that will help us connect discreet values
+    %Empty plots that will help us connect discrete values
 empiricalPlot = semilogy(NaN, NaN, 'b-.', 'LineWidth', 1);
 theoreticalPlot = semilogy(NaN, NaN, 'r-.', 'LineWidth', 1);
 
-for ebN0_dB = ebN0_range %loop that will go through all integer dB values
+for ebN0_dB = ebN0_range %Loop that will go through all integer dB values
     nas = getNoiseAndSignal(ebN0_dB, noise, map); %Getting a signal mixed with AWGN
     recovSignal = remap(nas); %Gray mapping received signal
     recovBits = demodulate(recovSignal); %Turning received mapped signal into a sequence of bits
@@ -71,8 +71,7 @@ grid on;
 title('BER vs. E_b/N_0 for QPSK');
 
 
-% This function will convert our Nx2 matrix of symbols into Nx1 vector of
-% gray mapped symbols
+% This function will convert our Nx2 matrix of symbols into Nx1 vector of gray mapped symbols
 function grayMapped = grayMap(bits)
     rows = size(bits, 1);
     grayMapped = zeros(rows, 1);
@@ -90,8 +89,7 @@ function grayMapped = grayMap(bits)
     end
 end
 
-% This function will be called multiple times for each dB value of Eb/N0 
-% and return signal injected with noise
+% This function will be called multiple times for each dB value of Eb/N0 and return signal injected with noise
 function n = getNoiseAndSignal(ebN0_dB, noise, signal)
     ebN0_dec = 10^(ebN0_dB/10); %Converted to decimal
     noise_scaling = 1 / sqrt(2*ebN0_dec); %obtained scalar
@@ -99,8 +97,7 @@ function n = getNoiseAndSignal(ebN0_dB, noise, signal)
     n = signal + totalAWGN; %injecting noise into our signal
 end
 
-% This function will recover the transmitted signal as it was mapped before
-% AWGN
+% This function will recover the transmitted signal as it was mapped before AWGN
 function reM = remap(sig)
     size = length(sig);
     reM = zeros(size, 1); 
@@ -120,10 +117,9 @@ function reM = remap(sig)
     end
 end
 
-% This function will demodulate the recovered signal and outputs bits
+% This function will demodulate the recovered signal and output bits
 function deM = demodulate(sig)
-    %Making Nx2 matrix that will store real component's bit in 1st column
-    %and imaginary component's bit in the 2nd column
+    %Making Nx2 matrix that will store real component's bits in 1st column and the imaginary component's bit in the 2nd column
     N = length(sig);
     deM1 = zeros(length(sig), 2);
     for n = 1:N
